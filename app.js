@@ -50,8 +50,7 @@ const server = http.createServer((req, res) => {
         res.end(contactMe);
     }
     else{
-        res.writeHead(400, { 'Content-Type': 'text/html' });
-        return res.end(notFound);
+        res.end(notFound);
     }
 });
 
