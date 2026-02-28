@@ -1,7 +1,6 @@
-const http = require('node:http');
+const express = require('express');
+const app = express();
 const fs = require('fs');
-
-console.log('app running...');
 
 let index = '';
 let about = '';
@@ -36,22 +35,16 @@ fs.readFile('404.html', 'utf8', (err, data) => {
     notFound = data;    
 });
 
-const server = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    
-    console.log(req.url);
-    if (req.url === '/'){
-        res.end(index);
-    }
-    else if (req.url === '/about'){
-        res.end(about);
-    }
-    else if (req.url === '/contact-me'){
-        res.end(contactMe);
-    }
-    else{
-        res.end(notFound);
-    }
-});
 
-server.listen(8080);
+app.get('/', (req, res) => res.end(index));
+app.get('/about', (req, res) => res.end(about));
+app.get('/contact-me', (req, res) => res.end(contactMe));
+app.use((req, res) => res.end(notFound));
+
+const PORT = 8080;
+app.listen(PORT, (err) => {
+    if (err){
+        throw err;
+    }
+    console.log('App running - listening on PORT ' + PORT);
+});
